@@ -1,0 +1,75 @@
+/* styles.css — SSD1306 Studio. Sistema de tokens deliberado, sin defaults genéricos. */
+:root{
+  --tinta: #0A0A08;      /* fondo OLED apagado */
+  --papel: #F0F0EC;      /* papel de estudio, frío pero no cream */
+  --acento: #FFB000;     /* ámbar instrumento — nuestro acento único */
+  --gris: #8A877D;       /* gris técnico, para metadatos/texto secundario */
+  --fondo-panel: #FFFFFF;
+  --radio: 3px;          /* radio borde sutil, nunca 0 en controles */
+  --shadow: 0 1px 2px rgba(0,0,0,.08);
+}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-family:"Archivo Narrow",sans-serif;line-height:1.5;-webkit-text-size-adjust:100%;}
+body{background:var(--papel);color:var(--tinta);overflow-x:hidden;}
+
+/* ---------- tipografía ---------- */
+.silkscreen{font-family:"Silkscreen",cursive;font-variant:tabular-nums;}
+.h1{font:700 2rem "Silkscreen",cursive;letter-spacing:-.02em;}
+.h2{font:600 1.25rem "Silkscreen",cursive;}
+.body{font:400 .95rem "Archivo Narrow",sans-serif;color:var(--tinta);}
+.code{font-family:"Fira Code",monospace;font-size:.85rem;color:var(--acento);}
+
+/* ---------- enfoque visible (amber) ---------- */
+*:focus-visible{outline:2px solid var(--acento);outline-offset:2px;}
+a:focus-visible{outline:2px solid var(--acento);}
+
+/* ---------- header ---------- */
+.topbar{max-width:1200px;margin:0 auto;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;}
+.marquee .silkscreen{display:block;margin-bottom:.1rem;}
+.acciones .btn{margin-left:.5rem;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .8rem;
+  border:1px solid var(--gris);background:transparent;color:var(--tinta);
+  font-family:"Archivo Narrow",sans-serif;font-size:.85rem;font-weight:500;
+  border-radius:var(--radio);cursor:pointer;transition:background .2s, border-color .2s;
+}
+.btn:hover{border-color:var(--acento);background:rgba(255,176,0,.08);}
+.btn.btn-primario{border-color:var(--acento);color:var(--acento);background:rgba(255,176,0,.12);}
+.btn.btn-primario:hover{background:rgba(255,176,0,.22);}
+.btn:focus-visible{outline:none;}
+
+/* ---------- main layout ---------- */
+.estudio{max-width:1200px;margin:1rem auto;padding:0 1.5rem;display:grid;
+  grid-template-columns: 160px 1fr 240px;
+  grid-template-areas: "i z d";
+  gap:1rem;}
+@media (max-width:960px){
+  .estudio{grid-template-columns:1fr;grid-template-areas:"i""z""d";}}
+@media (max-width:600px){
+  .topbar{flex-wrap:wrap;gap:.5rem;padding:.8rem;}
+  .topbar .acciones{order:-1;width:100%;justify-content:flex-end;}
+}
+
+/* paneles */
+.panel-izq{grid-area:i;background:var(--fondo-panel);border-left:1px solid var(--gris);padding:.8rem;}
+.panel-der{grid-area:d;background:var(--fondo-panel);padding:.8rem;}
+.panel h4{font-family:"Archivo Narrow",sans-serif;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);margin-bottom:.4rem;padding-bottom:.2rem;border-bottom:1px solid #E0E0E0;}
+.panel .preset-btn,.panel .elem-btn{width:100%;margin-bottom:.4rem;padding:.5rem; border:1px solid var(--gris);background:transparent;font-size:.8rem;cursor:pointer;border-radius:var(--radio);}
+.panel .preset-btn:hover,.panel .elem-btn:hover{border-color:var(--acento);background:rgba(255,176,0,.06);}
+.panel .preset-btn:active,.panel .elem-btn:active{background:rgba(255,176,0,.1);}
+.btn-block{width:100%;}
+
+/* canvas zona */
+.lienzo-zona{grid-area:z;position:relative;background:var(--tinta);border-radius:var(--radio);overflow:hidden;}
+.lienzo-zona canvas{display:block;width:768px;height:384px;}
+
+/* input flotante */
+#input-flotante{pointer-events auto;z-index:10;}
+
+/* footer */
+.estado{max-width:1200px;margin:1rem auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;font-size:.75rem;color:var(--gris);border-top:1px solid #E0E0E0;padding-top .8rem;}
+.led{width:8px;height:8px;border-radius:50;background:var(--gris);margin-right:.5ms;flex-shrink:0;transition:background .2s;}
+.led.activo{background:var(--acento);}

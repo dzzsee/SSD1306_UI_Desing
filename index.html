@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSD1306 Studio — Editor de UI para pantalla OLED 128×64</title>
+  <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- esptool-js CDN (global ESPLoader/Transport tras cargar) -->
+  <script src="https://unpkg.com/esptool-js@0.4.5/bundle.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="marca">
+      <span class="silkscreen">SSD1306</span> <span>studio</span>
+    </div>
+    <div class="acciones">
+      <button id="btn-compilar" class="btn">Compilar</button>
+      <button id="btn-ino" class="btn">Descargar .ino</button>
+      <button id="btn-subir" class="btn btn-primario">Compilar y subir al ESP32</button>
+    </div>
+  </header>
+
+  <main class="estudio">
+    <aside class="panel panel-izq">
+      <section class="presets">
+        <h4 style="font-family:'Archivo Narrow',sans-serif;margin-bottom:.4rem;">Presets</h4>
+        <button class="preset-btn" data-preset="bateria">Batería</button>
+        <button class="preset-btn" data-preset="hora">Hora</button>
+        <button class="preset-btn" data-preset="clima">Clima</button>
+        <button class="preset-btn" data-preset="panel">Panel completo</button>
+      </section>
+      <section class="elementos" style="margin-top:1rem;">
+        <h4 style="font-family:'Archivo Narrow',sans-serif;margin-bottom:.4rem;">Elementos</h4>
+        <button class="elem-btn" data-elem="battery">Batería</button>
+        <button class="elem-btn" data-elem="wxicon">Icono clima</button>
+        <button class="elem-btn" data-elem="text">Texto</button>
+        <button class="elem-btn" data-elem="rect">Rectángulo</button>
+        <button class="elem-btn" data-elem="line">Línea</button>
+        <button class="elem-btn" data-elem="disc">Círculo</button>
+      </section>
+      <section style="margin-top:1rem;">
+        <button id="limpiar-todo" class="btn-block" style="width:100%;font-size:.8rem;">Limpiar todo</button>
+      </section>
+    </aside>
+
+    <section class="lienzo-zona">
+      <canvas id="lienzo" width="768" height="384" aria-label="Canvas de diseño 128x64"></canvas>
+      <input type="text" id="input-flotante" hidden autocomplete="off" style="position:absolute;left:0;top:0;padding:.4rem;font-size:.9rem;pointer-events:none;font-family:'Archivo Narrow',sans-serif;background:#F0F0EC;border:1px solid #1B1B18;color:#0A0A08;">
+    </section>
+
+    <aside class="panel panel-der">
+      <section id="seleccion" style="margin-top:1rem;display:none;"></section>
+      <section id="simulacion" style="margin-top:1rem;"></section>
+      <section id="conexion" style="margin-top:1rem;">
+        <h4 style="font-family:'Archivo Narrow',sans-serif;margin-bottom:.4rem;">Conexión al ESP32</h4>
+        <div style="font-size:.8rem;font-family:'Archivo Narrow',sans-serif;">
+          <div>SSID: <input id="wifi-ssid" type="text" placeholder="Tu red WiFi" style="width:100%;padding:.4rem;font-size:.8rem;margin-bottom .4rem;"></div>
+          <div>Contraseña: <input id="wifi-pass" type="password" placeholder="Password" style="width:100%;padding:.4rem;font-size:.8rem;margin-bottom .4rem;"></div>
+          <div>Latitud: <input id="lat" type="number" step="0.0001" placeholder="-34.5678" style="width:100%;padding:.4rem;font-size:.8rem;margin-bottom .4rem;"></div>
+          <div>Longitud: <input id="lon" type="number" step="0.0001" placeholder="-58.1234" style="width:100%;padding:.4rem;font-size:.8rem;margin-bottom .4rem;"></div>
+          <div>Zona horaria (horas): <select id="tz" style="width:100%;padding:.4rem;font-size:.8rem;"><option value="-3">UTC-3 (Argentina)</option><option value="0">UTC (UTC)</option><option value="1">UTC+1</option><option value="2">UTC+2</option></select></div>
+          <div>Divisor voltaje: <input id="vdiv" type="number" value="2" min="1" step="0.1" style="width:100%;padding:.4rem;font-size:.8rem;"></div>
+          <div>V mínimo celda: <input id="vmin" type="number" value="3.3" min="1" step="0.1" style="width:100%;padding:.4rem;font-size:.8rem;"></div>
+          <div>V máxima celda: <input id="vmax" type="number" value="4.2" min="1" step="0.1" style="width:100%;padding:.4rem;font-size:.8rem;"></div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="estado">
+    <span class="led"></span>
+    <span id="estado-texto">Sin conexión</span>
+    <button id="log-toggle" style="font-size:.7rem;padding:.2rem .4rem;">Registro</button>
+    <pre id="log" style="display:none;font-size:.7rem;font-family:monospace,monospace;margin:0;padding:.4rem;background:#0A0A08;color:#FFB000;white-space:pre-wrap;"></pre>
+  </footer>
+
+  <script src="uploader.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
